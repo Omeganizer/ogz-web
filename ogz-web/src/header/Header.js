@@ -1,11 +1,18 @@
 import React from 'react';
-import { Navbar, Nav, Modal, Button, Row, Col } from 'react-bootstrap';
+import { Navbar, Nav, Modal, Button, Col } from 'react-bootstrap';
+import Estoque from '../body/Estoque';
+import Integrantes from '../body/Integrantes';
+import Visitas from '../body/Visitas';
 
 class Header extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showLogout: false
+            showLogout: false,
+            showPerfil: false,
+            showVisitas: false,
+            showEstoque: false,
+            showIntegrantes: false
         };
     }
 
@@ -13,12 +20,48 @@ class Header extends React.Component {
         this.setState({ showLogout: true })
     }
 
-    logoutModalClose = () => {
+    closeLogoutModal = () => {
         this.setState({ showLogout: false });
     }
 
+    showVisitas = () => {
+        this.setState({
+            showPerfil: false,
+            showVisitas: true,
+            showEstoque: false,
+            showIntegrantes: false
+        });
+    }
+
+    showPerfil = () => {
+        this.setState({
+            showPerfil: true,
+            showVisitas: false,
+            showEstoque: false,
+            showIntegrantes: false
+        });
+    }
+
+    showEstoque = () => {
+        this.setState({
+            showPerfil: false,
+            showVisitas: false,
+            showEstoque: true,
+            showIntegrantes: false
+        });
+    }
+    
+    showIntegrantes = () => {
+        this.setState({
+            showPerfil: false,
+            showVisitas: false,
+            showEstoque: false,
+            showIntegrantes: true
+        });
+    }
+
     render() {
-        const { showLogout } = this.state;
+        const { showLogout, showVisitas, showEstoque, showIntegrantes } = this.state;
 
         return (
             <div className="ogz-web">
@@ -27,10 +70,10 @@ class Header extends React.Component {
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="mr-auto">
-                            <Nav.Link href="#perfil">Perfil</Nav.Link>
-                            <Nav.Link href="#estoque">Estoque</Nav.Link>
-                            <Nav.Link href="#integrantes">Integrantes</Nav.Link>
-                            <Nav.Link href="#visitas">Visitas</Nav.Link>
+                            <Nav.Link onClick={this.showPerfil}>Perfil</Nav.Link>
+                            <Nav.Link onClick={this.showEstoque}>Estoque</Nav.Link>
+                            <Nav.Link onClick={this.showIntegrantes}>Integrantes</Nav.Link>
+                            <Nav.Link onClick={this.showVisitas}>Visitas</Nav.Link>
                         </Nav>
                         <Nav>
                             <Nav.Link onClick={this.showLogoutModal}>Sair</Nav.Link>
@@ -45,16 +88,21 @@ class Header extends React.Component {
                         </Modal.Header>
                         <Modal.Body>Tem certeza que deseja sair do sistema?</Modal.Body>
                         <Modal.Footer>
-                                <Col>
-                                    <Button variant="success" onClick={this.logoutModalClose} block> Continuar </Button>
-                                </Col>
-                                <Col>
-                                    <Button variant="danger" onClick={this.logoutModalClose} block> Sair </Button>
-                                </Col>
+                            <Col>
+                                <Button variant="success" onClick={this.closeLogoutModal} block> Continuar </Button>
+                            </Col>
+                            <Col>
+                                <Button variant="danger" onClick={this.closeLogoutModal} block> Sair </Button>
+                            </Col>
                         </Modal.Footer>
                     </Modal>
                     : null}
 
+                    {showVisitas ? <Visitas /> : null}
+
+                    {showEstoque ? <Estoque /> : null}
+
+                    {showIntegrantes ? <Integrantes /> : null}
             </div>
         );
     }
